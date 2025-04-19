@@ -1,0 +1,537 @@
+--noli real
+
+
+-- KEYBINDS V, B, N.
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local camera = game.Workspace.CurrentCamera
+local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+
+local screenGui = Instance.new("ScreenGui", player.PlayerGui)
+
+local dotTextLabel = Instance.new("TextLabel", screenGui)
+dotTextLabel.Text = ""
+dotTextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+dotTextLabel.Font = Enum.Font.SourceSans
+dotTextLabel.TextSize = 30
+dotTextLabel.Position = UDim2.new(1, -200, 0, 0)
+dotTextLabel.BackgroundTransparency = 1
+dotTextLabel.TextStrokeTransparency = 0.3
+dotTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+dotTextLabel.Visible = true
+
+local malwareTextLabel = Instance.new("TextLabel", screenGui)
+malwareTextLabel.Text = ""
+malwareTextLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+malwareTextLabel.Font = Enum.Font.SourceSans
+malwareTextLabel.TextSize = 24
+malwareTextLabel.Position = UDim2.new(0.5, -200, 1, -40)
+malwareTextLabel.BackgroundTransparency = 1
+malwareTextLabel.TextStrokeTransparency = 0.3
+malwareTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+malwareTextLabel.Visible = true
+
+local implantTextLabel = Instance.new("TextLabel", screenGui)
+implantTextLabel.Text = ""
+implantTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+implantTextLabel.Font = Enum.Font.SourceSans
+implantTextLabel.TextSize = 30
+implantTextLabel.Position = UDim2.new(1, -200, 1, -40)
+implantTextLabel.BackgroundTransparency = 1
+implantTextLabel.TextStrokeTransparency = 0.3
+implantTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+implantTextLabel.Visible = true
+
+local implantCooldownLabel = Instance.new("TextLabel", screenGui)
+implantCooldownLabel.Text = ""
+implantCooldownLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+implantCooldownLabel.Font = Enum.Font.SourceSans
+implantCooldownLabel.TextSize = 20
+implantCooldownLabel.Position = UDim2.new(1, -200, 1, -80)
+implantCooldownLabel.BackgroundTransparency = 1
+implantCooldownLabel.TextStrokeTransparency = 0.3
+implantCooldownLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+implantCooldownLabel.Visible = true
+
+local starDrivenLabel = Instance.new("TextLabel", screenGui)
+starDrivenLabel.Text = ""
+starDrivenLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+starDrivenLabel.Font = Enum.Font.SourceSans
+starDrivenLabel.TextSize = 30
+starDrivenLabel.Position = UDim2.new(1, -200, 0, 0)
+starDrivenLabel.BackgroundTransparency = 1
+starDrivenLabel.TextStrokeTransparency = 0.3
+starDrivenLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+starDrivenLabel.Visible = true
+
+local hallucinationLabel = Instance.new("TextLabel", screenGui)
+hallucinationLabel.Text = ""
+hallucinationLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+hallucinationLabel.Font = Enum.Font.SourceSans
+hallucinationLabel.TextSize = 30
+hallucinationLabel.Position = UDim2.new(0, 43, 0, 20)
+hallucinationLabel.BackgroundTransparency = 1
+hallucinationLabel.TextStrokeTransparency = 0.3
+hallucinationLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+hallucinationLabel.Visible = true
+
+local freezeAnimId = "rbxassetid://82002727792391"
+local idleAnimId = "rbxassetid://83465205704188"
+local walkAnimId = "rbxassetid://103292185212679"
+local runAnimId = "rbxassetid://103292185212679"
+local m1AnimId = "rbxassetid://109230267448394"
+local implantAnimId = "rbxassetid://140035118771958"
+local starDrivenAnimId = "rbxassetid://139835501033932"
+local endAnimId = "rbxassetid://126896426760253"
+local missAnimId = "rbxassetid://101969152698451"
+local hitAnimId = "rbxassetid://92243093913547"
+local hallucinationAnimId = "rbxassetid://128730974312965"
+
+local freezeAnim = Instance.new("Animation"); freezeAnim.AnimationId = freezeAnimId
+local idleAnim = Instance.new("Animation"); idleAnim.AnimationId = idleAnimId
+local walkAnim = Instance.new("Animation"); walkAnim.AnimationId = walkAnimId
+local runAnim = Instance.new("Animation"); runAnim.AnimationId = runAnimId
+local m1Anim = Instance.new("Animation"); m1Anim.AnimationId = m1AnimId
+local implantAnim = Instance.new("Animation"); implantAnim.AnimationId = implantAnimId
+local starDrivenAnim = Instance.new("Animation"); starDrivenAnim.AnimationId = starDrivenAnimId
+local endAnim = Instance.new("Animation"); endAnim.AnimationId = endAnimId
+local missAnim = Instance.new("Animation"); missAnim.AnimationId = missAnimId
+local hitAnim = Instance.new("Animation"); hitAnim.AnimationId = hitAnimId
+local hallucinationAnim = Instance.new("Animation"); hallucinationAnim.AnimationId = hallucinationAnimId
+
+local freezeTrack = humanoid:LoadAnimation(freezeAnim)
+local idleTrack = humanoid:LoadAnimation(idleAnim)
+local walkTrack = humanoid:LoadAnimation(walkAnim)
+local runTrack = humanoid:LoadAnimation(runAnim)
+local m1Track = humanoid:LoadAnimation(m1Anim)
+local implantTrack = humanoid:LoadAnimation(implantAnim)
+local starDrivenTrack = humanoid:LoadAnimation(starDrivenAnim)
+local endTrack = humanoid:LoadAnimation(endAnim)
+local missTrack = humanoid:LoadAnimation(missAnim)
+local hitTrack = humanoid:LoadAnimation(hitAnim)
+local hallucinationTrack = humanoid:LoadAnimation(hallucinationAnim)
+
+local introSound = Instance.new("Sound", character)
+introSound.SoundId = "rbxassetid://97041392946745"
+introSound.Volume = 1
+introSound.Looped = false
+
+local idleSound = Instance.new("Sound", character)
+idleSound.SoundId = "rbxassetid://73235255020546"
+idleSound.Volume = 0.7
+
+local walkSound = Instance.new("Sound", character)
+walkSound.SoundId = "rbxassetid://99809965759734"
+walkSound.Volume = 0.4
+
+local slashSound = Instance.new("Sound", character)
+slashSound.SoundId = "rbxassetid://118208498013260"
+slashSound.Volume = 1.7
+
+local backgroundMusic = Instance.new("Sound", character)
+backgroundMusic.SoundId = "rbxassetid://79001697227075"
+backgroundMusic.Volume = 0.3
+backgroundMusic.Looped = true
+
+local implantSound = Instance.new("Sound", character)
+implantSound.SoundId = "rbxassetid://114767134633867"
+implantSound.Volume = 1
+implantSound.Looped = false
+
+local hallucinationSound = Instance.new("Sound", rootPart)
+hallucinationSound.SoundId = "rbxassetid://113926551867193"
+hallucinationSound.Volume = 3
+
+local function stopAllAnimations()
+    for _, track in pairs(humanoid:GetPlayingAnimationTracks()) do
+        track:Stop()
+    end
+end
+
+local function playFreezeAnimation()
+    humanoid.WalkSpeed = 0  
+    humanoid.JumpPower = 0  
+    rootPart.Anchored = true
+    introSound:Play()
+    freezeTrack:Play()
+    freezeTrack.Stopped:Wait()
+    rootPart.Anchored = false
+    humanoid.WalkSpeed = 16
+    humanoid.JumpPower = 50
+end
+
+playFreezeAnimation()
+
+local function updateAnimations()
+    if humanoid.MoveDirection.Magnitude > 0 then
+        if humanoid.WalkSpeed > 16 then
+            if not runTrack.IsPlaying then
+                idleTrack:Stop()
+                walkTrack:Stop()
+                runTrack:Play()
+                walkSound:Stop()
+            end
+        else
+            if not walkTrack.IsPlaying then
+                idleTrack:Stop()
+                runTrack:Stop()
+                walkTrack:Play()
+                walkSound:Play()
+            end
+        end
+    else
+        if not idleTrack.IsPlaying then
+            walkTrack:Stop()
+            runTrack:Stop()
+            idleTrack:Play()
+            idleSound:Play()
+        end
+    end
+end
+
+local canAttack = true
+local attackCooldown = 2
+
+local function onM1Click()
+    if canAttack then
+        canAttack = false
+        m1Track:Play()
+        idleTrack:Stop()
+        walkTrack:Stop()
+        runTrack:Stop()
+        slashSound:Play()
+        wait(attackCooldown)
+        canAttack = true
+    end
+end
+
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.UserInputType == Enum.UserInputType.MouseButton1 then
+        onM1Click()
+    end
+end)
+
+runService.Heartbeat:Connect(function()
+    if not backgroundMusic.IsPlaying then
+        backgroundMusic:Play()
+    end
+end)
+
+runService.Heartbeat:Connect(function()
+    updateAnimations()
+    local distanceToCamera = (camera.CFrame.Position - rootPart.Position).Magnitude
+    walkSound.Volume = math.clamp(1 / distanceToCamera, 0.4, 1)
+    local idleDistance = (camera.CFrame.Position - rootPart.Position).Magnitude
+    idleSound.Volume = math.clamp(1 / idleDistance, 0.4, 0.7)
+end)
+
+local function raiseAndDeleteText()
+    for i = 0, 1, 0.1 do
+        malwareTextLabel.Position = UDim2.new(0.5, -200, 1 - (i * 3), -40)
+        wait(0.05)
+    end
+    wait(0.5)
+    malwareTextLabel:Destroy()
+end
+
+raiseAndDeleteText()
+
+local canImplant = true
+local implantCooldownTime = 15
+local implantCooldownRemaining = implantCooldownTime
+
+local function freezeMovement()
+    humanoid.WalkSpeed = 0
+    humanoid.JumpPower = 0
+    rootPart.Anchored = true
+end
+
+local function unfreezeMovement()
+    humanoid.WalkSpeed = 16
+    humanoid.JumpPower = 50
+    rootPart.Anchored = false
+end
+
+local function playImplant()
+    if canImplant then
+        canImplant = false
+        implantCooldownRemaining = implantCooldownTime
+        freezeMovement()
+        implantTrack:Play()
+        implantSound:Play()
+        implantTrack.Stopped:Wait()
+        unfreezeMovement()
+        while implantCooldownRemaining > 0 do
+            implantCooldownLabel.Text = "Cooldown: " .. implantCooldownRemaining .. "s"
+            wait(1)
+            implantCooldownRemaining = implantCooldownRemaining - 1
+        end
+        implantCooldownLabel.Text = ""
+        implantTextLabel.Text = ""
+        canImplant = true
+    end
+end
+
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.V then
+        playImplant()
+    end
+end)
+
+runService.Heartbeat:Connect(function()
+    if not canImplant then
+        implantCooldownLabel.Text = "Cooldown: " .. implantCooldownRemaining .. "s"
+    else
+        implantTextLabel.Text = ""
+    end
+end)
+
+local canUseStarDriven = true
+local starDrivenCooldownTime = 3
+local starDrivenCooldownRemaining = 0
+local hitPlayer = false
+
+local function boostPlayer()
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(40000, 40000, 40000)
+    bodyVelocity.Velocity = (rootPart.CFrame.LookVector * 50) + Vector3.new(0, 0.4, 0)
+    bodyVelocity.Parent = rootPart
+    task.delay(2, function()
+        if bodyVelocity then bodyVelocity:Destroy() end
+    end)
+end
+
+local function executeStarDrivenAbility()
+    if canUseStarDriven then
+        canUseStarDriven = false
+        hitPlayer = false
+        starDrivenTrack:Play()
+        wait(0.5)
+        boostPlayer()
+        endTrack:Play()
+        local startTime = tick()
+        local animationEndTime = startTime + 2
+        while tick() < animationEndTime do
+            for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+                if otherPlayer ~= player then
+                    local otherCharacter = otherPlayer.Character
+                    if otherCharacter and otherCharacter:FindFirstChild("HumanoidRootPart") then
+                        local distance = (otherCharacter.HumanoidRootPart.Position - rootPart.Position).Magnitude
+                        if distance < 5 then
+                            hitPlayer = true
+                            stopAllAnimations()
+                            hitTrack:Play()
+                            break
+                        end
+                    end
+                end
+            end
+            wait(0.1)
+        end
+        endTrack:Stop()
+        stopAllAnimations()
+        if not hitPlayer then
+            missTrack:Play()
+        end
+        starDrivenCooldownRemaining = starDrivenCooldownTime
+        while starDrivenCooldownRemaining > 0 do
+            starDrivenLabel.Text = "Cooldown: " .. starDrivenCooldownRemaining .. "s"
+            starDrivenLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+            wait(1)
+            starDrivenCooldownRemaining = starDrivenCooldownRemaining - 1
+        end
+        starDrivenLabel.Text = ""
+        starDrivenLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+        canUseStarDriven = true
+    end
+end
+
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.B then
+        executeStarDrivenAbility()
+    end
+end)
+
+runService.Heartbeat:Connect(function()
+    if not canUseStarDriven then
+        starDrivenLabel.Text = "Cooldown: " .. starDrivenCooldownRemaining .. "s"
+        starDrivenLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+    else
+        starDrivenLabel.Text = ""
+        starDrivenLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+    end
+end)
+
+local canUseHallucination = true
+local hallucinationCooldownTime = 13
+local hallucinationCooldownRemaining = 0
+
+local function disableMovement()
+    humanoid.WalkSpeed = 0
+    humanoid.JumpPower = 0
+    rootPart.Anchored = true
+end
+
+local function enableMovement()
+    humanoid.WalkSpeed = 16
+    humanoid.JumpPower = 50
+    rootPart.Anchored = false
+end
+
+local function executeHallucination()
+    if canUseHallucination then
+        canUseHallucination = false
+        disableMovement()
+        hallucinationTrack:Play()
+        hallucinationSound:Play()
+        hallucinationTrack.Stopped:Wait()
+        enableMovement()
+        hallucinationCooldownRemaining = hallucinationCooldownTime
+        while hallucinationCooldownRemaining > 0 do
+            hallucinationLabel.Text = "Cooldown: " .. hallucinationCooldownRemaining .. "s"
+            hallucinationLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+            wait(1)
+            hallucinationCooldownRemaining = hallucinationCooldownRemaining - 1
+        end
+        hallucinationLabel.Text = ""
+        hallucinationLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+        canUseHallucination = true
+    end
+end
+
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.N then
+        executeHallucination()
+    end
+end)
+
+runService.Heartbeat:Connect(function()
+    if not canUseHallucination then
+        hallucinationLabel.Text = "Cooldown: " .. hallucinationCooldownRemaining .. "s"
+        hallucinationLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+    else
+        hallucinationLabel.Text = ""
+        hallucinationLabel.TextColor3 = Color3.fromRGB(128, 0, 128)
+    end
+end)
+
+local assetIds = {
+    "rbxassetid://140377899284841",  
+    "rbxassetid://85740071439281",   
+    "rbxassetid://101381269547810",  
+    "rbxassetid://111794932270445"   
+}
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local loadedAssets = {}
+
+for _, id in ipairs(assetIds) do
+    local success, result = pcall(function() return game:GetObjects(id) end)
+    if success and #result > 0 then
+        table.insert(loadedAssets, result[1])
+    else
+        warn("Failed to load asset:", id)
+    end
+end
+
+local function equipAccessory(char, accessory)
+    local clone = accessory:Clone()
+    local handle = clone:FindFirstChild("Handle")
+    if not handle then return end
+
+    local handleAttachment = handle:FindFirstChildOfClass("Attachment")
+    if not handleAttachment then
+        local fallbackAttachment = Instance.new("Attachment")
+        fallbackAttachment.Name = "HatAttachment"
+        fallbackAttachment.CFrame = clone.AttachmentPoint or CFrame.new()
+        fallbackAttachment.Parent = handle
+        handleAttachment = fallbackAttachment
+    end
+
+    local attached = false
+    for _, part in ipairs(char:GetChildren()) do
+        if part:IsA("BasePart") then
+            local attachment = part:FindFirstChild(handleAttachment.Name)
+            if attachment then
+                handle.CFrame = attachment.CFrame:ToWorldSpace(handleAttachment.CFrame:Inverse())
+                local weld = Instance.new("Weld")
+                weld.Part0 = part
+                weld.Part1 = handle
+                weld.C0 = attachment.CFrame
+                weld.C1 = handleAttachment.CFrame
+                weld.Parent = handle
+                attached = true
+                break
+            end
+        end
+    end
+
+    if not attached then
+        local fallbackPart = char:FindFirstChild("Head") or char:FindFirstChild("Torso")
+        if fallbackPart then
+            handle.CFrame = fallbackPart.CFrame
+            local weld = Instance.new("Weld")
+            weld.Part0 = fallbackPart
+            weld.Part1 = handle
+            weld.C0 = CFrame.new()
+            weld.C1 = CFrame.new()
+            weld.Parent = handle
+        end
+    end
+
+    clone.Parent = char
+end
+
+local function equipShirt(char, shirt)
+    local s = char:FindFirstChildOfClass("Shirt") or Instance.new("Shirt")
+    s.ShirtTemplate = shirt.ShirtTemplate
+    s.Parent = char
+end
+
+local function equipPants(char, pants)
+    local p = char:FindFirstChildOfClass("Pants") or Instance.new("Pants")
+    p.PantsTemplate = pants.PantsTemplate
+    p.Parent = char
+end
+
+local function stripAndColorCharacter(char)
+    for _, item in ipairs(char:GetChildren()) do
+        if item:IsA("Accessory") or item:IsA("Shirt") or item:IsA("Pants") or (item:IsA("Decal") and item.Name == "face") then
+            item:Destroy()
+        elseif item:IsA("BasePart") then
+            item.BrickColor = BrickColor.new("Really black")
+        end
+    end
+end
+
+local function applyAssets(char)
+    stripAndColorCharacter(char)
+    for _, asset in ipairs(loadedAssets) do
+        if asset:IsA("Accessory") then
+            equipAccessory(char, asset)
+        elseif asset:IsA("Shirt") then
+            equipShirt(char, asset)
+        elseif asset:IsA("Pants") then
+            equipPants(char, asset)
+        else
+            warn("Unsupported asset type: " .. asset.ClassName)
+        end
+    end
+end
+
+local function setup()
+    local char = lp.Character or lp.CharacterAdded:Wait()
+    task.wait(1)
+    applyAssets(char)
+end
+
+lp.CharacterAdded:Connect(setup)
+if lp.Character then
+    setup()
+end
